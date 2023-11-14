@@ -1,64 +1,47 @@
-def corner_corrector(x, y):
-    return up_down, left_right
-
-def side_detectors(x, y):
-    if x != 1: #up_down side
-        return "top_bottom"
-    else: #left_right side
-        return "left_right"
-        
-    
-    
-
+# Validate a minesweeper interior block
+# block_data is a two dimensional array containing the data from a 3 x 3 grid of squares
+# We are assuming that we are only checking interior blocks for now
+# Return value should be a string that says either Valid or Invalid (with some hints as to why it's invlaid)
 def validate( block_data ):
-    corner_val = (0, len(block_data) - 1)
-    for row in range(len(block_data)):
-        for column in range(len(block_data[row])):
-            if (row in corner_val and column in corner_val) and block_data[row][column] >= 0:
-                x, y = corner_corrector(row, column)
-                if y < 0:
-                  square = block_data[row][column + y:column + 1] + block_data[row + x][column + y:column + 1]
-                else:
-                  square = block_data[row][column:column + (y * 2)] + block_data[row + x][column:column + (y * 2)] 
-                #print(block_data[row][column])
-                #print(square)
-                #print(square.count(-1))
-                if square.count(-1) == block_data[row][column]:
-                    pass
-                else:
-                    return  row, column
-            elif ((row in corner_val) ^ (column in corner_val)) and block_data[row][column] >= 0:
-                a = side_detectors(row, column)
-                if a == "top_bottom":
-                    if block_data[1].count(-1) == block_data[row][column]:
-                        pass
-                    else:
-                        return row, column
-                else:
-                    d = []
-                    d.append(block_data[0][1])
-                    d.append(block_data[1][1])
-                    d.append(block_data[2][1])
-                    if d.count(-1) == block_data[row][column]:
-                        pass
-                    else:
-                        return row, column
-    return "valid"
+  # Check whether the centre block is a bomb, a number, or an invalid input
+  # Skip bombs, send an error on invalid input, verify numbers
 
-
-
-                
-                
-            
-            
-
-              
-          
-
+  return validation
 
 grid = [
-  [2,-1,2],
-  [2,-1,2],
-  [1,1,1]
+  [0,0,0],
+  [1,1,0],
+  [-1,1,0]
 ]
-print(validate(grid))
+
+row = 0
+col = 0 
+bombs = 0
+
+while row < 3:
+    while col < 3: 
+#        print("here")
+        value = grid [row][col]
+#        print(row)
+#        print(col)
+#        print(value)
+        if value == -1:
+            bombs = bombs + 1
+            col = col + 1
+#            print(col)
+        else:
+            col = col + 1
+    row = row + 1
+    col = 0    
+#print(f"the number of bombs are {bombs}")
+
+middle_value = grid [1][1]
+#print(f"The middle value is {middle_value}")
+
+if middle_value == bombs:
+#    print(f"VALID")
+    validation = "VALID"
+else:
+#    print(f"INVALID CHECK INTERROIR BLOCK")
+    validation = "INVALID CHECK INTEROIR BLOCK"
+print (validate(grid))
